@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MT Juris — Sistema de Gestão Jurídica</title>
+<meta name="description" content="MT Juris: gestão de prazos, processos, clientes e financeiro para escritórios de advocacia, com segurança de banco de dados e IA aplicada a publicações. Teste grátis por 7 dias." />
+<link rel="icon" type="image/png" href="assets/mtjuris-icone.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0B1D3A;
+    --navy-2:#132A52;
+    --blue:#1D4ED8;
+    --blue-light:#3B82F6;
+    --gold:#D4AF37;
+    --gold-light:#e8c96a;
+    --gray:#E6E8EC;
+    --gray-2:#F5F6F8;
+    --ink:#0B1D3A;
+    --muted:#5A6577;
+    --white:#FFFFFF;
+    --radius:14px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'DM Sans', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+  .eyebrow{
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--blue);
+  }
+  .eyebrow.on-dark{color:var(--gold-light);}
+  h1,h2,h3{font-family:'DM Sans', sans-serif;font-weight:700;margin:0;letter-spacing:-.01em;}
+  h2{font-size:clamp(28px,3.6vw,42px);letter-spacing:-.02em;}
+  p{margin:0;}
+  .muted{color:var(--muted);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:15px 28px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-blue{background:var(--blue);color:#fff;box-shadow:0 8px 20px -8px rgba(29,78,216,.55);}
+  .btn-blue:hover{background:#1a45c4;}
+  .btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 8px 20px -8px rgba(212,175,55,.55);}
+  .btn-gold:hover{background:var(--gold-light);}
+  .btn-outline{background:transparent;border-color:rgba(11,29,58,.2);color:var(--navy);}
+  .btn-outline:hover{border-color:var(--navy);}
+  .btn-outline-light{background:transparent;border-color:rgba(255,255,255,.35);color:#fff;}
+  .btn-outline-light:hover{border-color:#fff;}
+  .btn-sm{padding:11px 18px;font-size:13.5px;}
+
+  /* NAV */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(11,29,58,.08);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .nav-logo img{height:34px;width:auto;}
+  .nav-links{display:flex;gap:30px;align-items:center;}
+  .nav-links a{font-size:14.5px;font-weight:500;color:var(--navy);opacity:.8;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  .nav-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .nav-toggle span{display:block;width:22px;height:2px;background:var(--navy);margin:5px 0;}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background:radial-gradient(1200px 600px at 80% -10%, #1a3568 0%, var(--navy) 55%, var(--navy) 100%);
+    color:#fff;
+    overflow:hidden;
+    padding:88px 0 0;
+  }
+  .hero-shield-bg{
+    position:absolute;
+    right:-140px;top:-60px;
+    width:640px;height:640px;
+    opacity:.10;
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:56px;
+    align-items:center;
+    padding-bottom:70px;
+    position:relative;
+  }
+  .hero h1{
+    font-size:clamp(34px,4.6vw,54px);
+    line-height:1.08;
+    letter-spacing:-.02em;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold-light);
+  }
+  .hero-sub{
+    margin-top:22px;
+    font-size:17.5px;
+    color:rgba(255,255,255,.78);
+    max-width:520px;
+    line-height:1.65;
+  }
+  .hero-ctas{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.55);}
+
+  /* mock browser */
+  .mock{
+    position:relative;
+    background:#0e2547;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.6);
+    overflow:hidden;
+  }
+  .mock-bar{
+    display:flex;align-items:center;gap:6px;
+    padding:12px 14px;
+    background:rgba(255,255,255,.04);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .mock-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18);}
+  .mock-url{
+    margin-left:10px;font-size:11.5px;color:rgba(255,255,255,.4);
+    background:rgba(255,255,255,.05);
+    padding:4px 10px;border-radius:6px;
+  }
+  .mock-body{padding:0;line-height:0;}
+  .mock-body img{display:block;width:100%;height:auto;}
+
+  /* TRUST STRIP */
+  .trust{
+    background:var(--navy-2);
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+  .trust-inner{
+    max-width:var(--maxw);margin:0 auto;padding:20px 28px;
+    display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;
+    font-size:13px;color:rgba(255,255,255,.62);
+  }
+  .trust-inner span{white-space:nowrap;}
+  .trust-inner b{color:#fff;font-weight:600;}
+
+  /* PROBLEM */
+  .section{padding:96px 0;}
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .section-head h2{margin-top:12px;}
+  .section-head p{margin-top:16px;font-size:16.5px;color:var(--muted);line-height:1.65;}
+
+  .pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .pain-card{
+    background:var(--gray-2);
+    border-radius:var(--radius);
+    padding:30px 26px;
+    border:1px solid rgba(11,29,58,.06);
+  }
+  .pain-card .num{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.06em;}
+  .pain-card h3{font-size:19px;margin-top:14px;}
+  .pain-card p{margin-top:10px;font-size:14.5px;color:var(--muted);line-height:1.6;}
+
+  /* PILLARS w/ scroll rail */
+  .pillars-section{background:var(--gray-2);padding:100px 0;}
+  .pillars-layout{display:grid;grid-template-columns:220px 1fr;gap:50px;align-items:start;}
+  .rail{position:sticky;top:100px;display:flex;flex-direction:column;gap:2px;}
+  .rail-item{
+    display:flex;align-items:center;gap:12px;
+    padding:13px 10px;border-radius:10px;
+    opacity:.4;transition:opacity .25s ease, background .25s ease;
+  }
+  .rail-item.active{opacity:1;background:rgba(29,78,216,.06);}
+  .rail-icon{
+    width:30px;height:30px;flex:none;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--white);border:1px solid rgba(11,29,58,.1);
+  }
+  .rail-item.active .rail-icon{background:var(--blue);border-color:var(--blue);}
+  .rail-icon svg{width:16px;height:16px;stroke:var(--navy);}
+  .rail-item.active .rail-icon svg{stroke:#fff;}
+  .rail-item span{font-size:13px;font-weight:600;}
+
+  .pillar-block{
+    display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;
+    padding:56px 0;border-bottom:1px solid rgba(11,29,58,.08);
+  }
+  .pillar-block:last-child{border-bottom:none;}
+  .pillar-block .tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);
+  }
+  .pillar-block h3{font-size:25px;margin-top:12px;letter-spacing:-.01em;}
+  .pillar-block p{margin-top:14px;color:var(--muted);font-size:15.5px;line-height:1.7;}
+  .pillar-block ul{margin:18px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .pillar-block li{display:flex;gap:10px;font-size:14.5px;color:var(--ink);}
+  .pillar-block li svg{flex:none;width:16px;height:16px;stroke:var(--blue);margin-top:2px;}
+  .pillar-visual{
+    background:#fff;border-radius:var(--radius);border:1px solid rgba(11,29,58,.08);
+    padding:0;box-shadow:0 24px 50px -30px rgba(11,29,58,.25);
+    overflow:hidden;line-height:0;
+  }
+  .pillar-visual img{display:block;width:100%;height:auto;}
+  .pillar-block.rev{grid-template-columns:1fr 1fr;}
+  .pillar-block.rev .pillar-visual{order:-1;}
+
+  /* mini widgets inside pillar visuals */
+  .mini-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed rgba(11,29,58,.08);}
+  .mini-row:last-child{border-bottom:none;}
+  .mini-dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .mini-bar{flex:1;height:8px;background:var(--gray);border-radius:4px;overflow:hidden;}
+  .mini-bar i{display:block;height:100%;background:var(--blue);border-radius:4px;}
+  .mini-label{font-size:12.5px;color:var(--muted);width:120px;flex:none;}
+  .mini-val{font-size:12.5px;font-weight:700;color:var(--navy);}
+
+  .extras{margin-top:80px;padding-top:64px;border-top:1px solid rgba(11,29,58,.1);}
+  .extras-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:20px;}
+  .extra-card{
+    background:#fff;border-radius:var(--radius);border:1px solid rgba(11,29,58,.08);
+    overflow:hidden;box-shadow:0 20px 40px -28px rgba(11,29,58,.22);
+  }
+  .extra-card img{display:block;width:100%;height:auto;}
+  .extra-copy{padding:18px 20px 22px;}
+  .extra-copy h4{font-size:15.5px;font-weight:700;margin:0;}
+  .extra-copy p{margin-top:6px;font-size:13.5px;color:var(--muted);line-height:1.55;}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+  .plan{
+    border-radius:18px;padding:34px 28px;
+    border:1.5px solid rgba(11,29,58,.1);
+    display:flex;flex-direction:column;
+    background:#fff;
+  }
+  .plan.featured{
+    background:var(--navy);color:#fff;
+    border-color:var(--navy);
+    box-shadow:0 30px 60px -25px rgba(11,29,58,.5);
+    transform:translateY(-10px);
+  }
+  .plan .badge{
+    align-self:flex-start;
+    font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    background:var(--gold);color:var(--navy);
+    padding:5px 12px;border-radius:20px;margin-bottom:16px;
+  }
+  .plan h3{font-size:20px;}
+  .plan .price{margin-top:14px;display:flex;align-items:baseline;gap:6px;}
+  .plan .price b{font-size:38px;letter-spacing:-.02em;}
+  .plan .price span{font-size:14px;color:var(--muted);}
+  .plan.featured .price span{color:rgba(255,255,255,.6);}
+  .plan .size{margin-top:6px;font-size:13.5px;color:var(--muted);}
+  .plan.featured .size{color:rgba(255,255,255,.65);}
+  .plan ul{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;flex:1;}
+  .plan li{display:flex;gap:10px;font-size:14px;}
+  .plan li svg{flex:none;width:16px;height:16px;stroke:var(--blue);margin-top:2px;}
+  .plan.featured li svg{stroke:var(--gold-light);}
+  .plan .btn{margin-top:28px;width:100%;}
+  .pricing-foot{margin-top:30px;text-align:center;font-size:13.5px;color:var(--muted);}
+
+  /* FAQ */
+  .faq-list{max-width:800px;}
+  .faq-item{border-bottom:1px solid rgba(11,29,58,.1);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;
+    font-family:inherit;font-size:16px;font-weight:600;color:var(--ink);
+  }
+  .faq-q .plus{flex:none;width:20px;height:20px;position:relative;}
+  .faq-q .plus::before,.faq-q .plus::after{content:"";position:absolute;background:var(--navy);border-radius:2px;transition:transform .25s ease;}
+  .faq-q .plus::before{width:100%;height:2px;top:9px;left:0;}
+  .faq-q .plus::after{width:2px;height:100%;left:9px;top:0;}
+  .faq-item.open .plus::after{transform:rotate(90deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .faq-a p{padding:0 0 22px;font-size:14.5px;color:var(--muted);line-height:1.7;max-width:680px;}
+
+  /* FINAL CTA */
+  .final-cta{
+    background:radial-gradient(900px 500px at 20% 0%, #16336a 0%, var(--navy) 60%);
+    color:#fff;padding:96px 0;text-align:center;
+  }
+  .final-cta h2{color:#fff;}
+  .final-cta p{margin-top:16px;color:rgba(255,255,255,.72);font-size:16.5px;}
+  .final-cta .hero-ctas{justify-content:center;margin-top:32px;}
+
+  footer{background:var(--navy);color:rgba(255,255,255,.6);padding:56px 0 30px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;}
+  .foot-grid img{height:60px;width:auto;margin-bottom:14px;}
+  .foot-grid p{font-size:13.5px;line-height:1.7;max-width:280px;color:rgba(255,255,255,.5);}
+  .foot-col h4{font-size:13px;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+  .foot-col a{display:block;font-size:14px;padding:6px 0;color:rgba(255,255,255,.6);}
+  .foot-col a:hover{color:#fff;}
+  .foot-bottom{
+    margin-top:50px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);
+    display:flex;justify-content:space-between;font-size:12.5px;color:rgba(255,255,255,.4);flex-wrap:wrap;gap:10px;
+  }
+
+  [data-reveal]{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  [data-reveal].in{opacity:1;transform:none;}
+
+  @media (max-width: 980px){
+    .hero-grid{grid-template-columns:1fr;}
+    .mock{margin-top:20px;}
+    .pain-grid{grid-template-columns:1fr;}
+    .pillars-layout{grid-template-columns:1fr;}
+    .rail{position:static;flex-direction:row;overflow-x:auto;gap:8px;margin-bottom:10px;padding-bottom:6px;}
+    .rail-item span{display:none;}
+    .pillar-block, .pillar-block.rev{grid-template-columns:1fr;}
+    .pillar-block.rev .pillar-visual{order:0;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .extras-grid{grid-template-columns:1fr;}
+    .plan.featured{transform:none;}
+    .foot-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top"><img src="assets/mtjuris-logo-horizontal.png" alt="MT Juris" /></a>
+    <nav class="nav-links">
+      <a href="#recursos">Recursos</a>
+      <a href="#seguranca">Segurança</a>
+      <a href="#planos">Planos</a>
+      <a href="#faq">Perguntas frequentes</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-blue btn-sm" href="#planos">Teste grátis por 7 dias</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <svg class="hero-shield-bg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 15 L140 35 L140 100 Q140 150 100 175 Q60 150 60 100 L60 35 Z" stroke="#D4AF37" stroke-width="2"/>
+    <line x1="88" y1="60" x2="112" y2="60" stroke="#D4AF37" stroke-width="2"/>
+    <line x1="100" y1="60" x2="100" y2="130" stroke="#D4AF37" stroke-width="2"/>
+    <line x1="76" y1="70" x2="100" y2="60" stroke="#D4AF37" stroke-width="1.4"/>
+    <line x1="124" y1="70" x2="100" y2="60" stroke="#D4AF37" stroke-width="1.4"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow on-dark">Sistema de gestão jurídica</p>
+        <h1>Prazo perdido não é <em>imprevisto.</em><br/>É sistema errado.</h1>
+        <p class="hero-sub">MT Juris organiza prazos, processos, clientes e financeiro do seu escritório em um único lugar — com o mesmo rigor de segurança que você exige em um banco. Menos planilha solta, menos WhatsApp perdido, mais controle.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-gold" href="#planos">Começar teste grátis de 7 dias</a>
+          <a class="btn btn-outline-light" href="#planos">Ver planos e preços</a>
+        </div>
+        <p class="hero-note">Sem necessidade de trocar sua forma de trabalhar da noite pro dia — importação de dados por planilha inclusa.</p>
+      </div>
+      <div class="mock" data-reveal>
+        <div class="mock-bar">
+          <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+          <span class="mock-url">app.mtjuris.com.br/dashboard</span>
+        </div>
+        <div class="mock-body">
+          <img src="assets/print-dashboard.jpg" alt="Dashboard MT Juris com riscos identificados pelo sistema" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trust">
+    <div class="trust-inner">
+      <span><b>CPF único</b> por cliente</span>
+      <span><b>RLS</b> a nível de banco de dados</span>
+      <span><b>IA</b> para leitura de publicações</span>
+      <span><b>Relatórios</b> inclusos em todos os planos</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="dores">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">O problema</p>
+      <h2>Seu escritório provavelmente já perdeu algo por causa disso</h2>
+      <p>Não é falta de cuidado da equipe. É falta de sistema. Planilha, papel e WhatsApp não avisam sozinhos quando algo está prestes a vencer.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card" data-reveal>
+        <p class="num">01</p>
+        <h3>Prazo sem dono nem revisão</h3>
+        <p>Um prazo enviado direto pro protocolo, sem ninguém revisar antes, é um prazo um passo distante do erro. Sem um fluxo claro de conferência, o risco fica invisível até estourar.</p>
+      </div>
+      <div class="pain-card" data-reveal>
+        <p class="num">02</p>
+        <h3>Cliente duplicado, dado cruzado</h3>
+        <p>Dois clientes com o mesmo nome não são a mesma pessoa. Cadastro por nome confunde processo, documento e até o acesso ao portal — CPF resolve isso na raiz.</p>
+      </div>
+      <div class="pain-card" data-reveal>
+        <p class="num">03</p>
+        <h3>Financeiro que todo mundo vê</h3>
+        <p>Nem toda informação do escritório deveria estar visível pra qualquer usuário do sistema. Sem controle de acesso por camada, um dado sensível é só um clique de distância.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars-section" id="recursos">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">O que o sistema faz</p>
+      <h2>Cinco frentes. Um único sistema.</h2>
+      <p>Cada módulo do MT Juris resolve uma frente específica da rotina do escritório — e todas conversam entre si.</p>
+    </div>
+
+    <div class="pillars-layout">
+      <div class="rail" id="rail">
+        <div class="rail-item" data-target="p1">
+          <span class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z"/></svg></span>
+          <span>Segurança</span>
+        </div>
+        <div class="rail-item" data-target="p2">
+          <span class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2a4 4 0 00-4 4c0 .8.2 1.5.6 2.1A4 4 0 004 12a4 4 0 002 3.5V17a4 4 0 004 4h1V6a4 4 0 00-1.5-4z"/><path d="M14.5 2a4 4 0 014 4c0 .8-.2 1.5-.6 2.1A4 4 0 0120 12a4 4 0 01-2 3.5V17a4 4 0 01-4 4h-1V6a4 4 0 011.5-4z"/></svg></span>
+          <span>Inteligência</span>
+        </div>
+        <div class="rail-item" data-target="p3">
+          <span class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></span>
+          <span>Estrutura</span>
+        </div>
+        <div class="rail-item" data-target="p4">
+          <span class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+          <span>Eficiência</span>
+        </div>
+        <div class="rail-item" data-target="p5">
+          <span class="rail-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M2 20c0-3 2.7-5.2 6-5.2s6 2.2 6 5.2M14.5 15.2c2.6.2 4.5 2.1 4.5 4.8"/></svg></span>
+          <span>Relacionamento</span>
+        </div>
+      </div>
+
+      <div class="pillar-items">
+        <div class="pillar-block" id="p1" data-reveal>
+          <div>
+            <span class="tag">01 · Segurança</span>
+            <h3>Proteção no nível do banco de dados, não só na tela</h3>
+            <p>Regras de acesso (RLS) garantem que cada usuário só vê o que pode ver — inclusive no financeiro, protegido por PIN próprio. Toda alteração sensível de permissão fica registrada em log de auditoria.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Row-level security em dados de clientes e financeiro</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Acesso ao financeiro protegido por PIN individual</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Log de auditoria para alterações administrativas</li>
+            </ul>
+          </div>
+          <div class="pillar-visual">
+            <img src="assets/print-usuarios.jpg" alt="Tela de gestão de usuários do MT Juris com código do escritório" />
+          </div>
+        </div>
+
+        <div class="pillar-block rev" id="p2" data-reveal>
+          <div>
+            <span class="tag">02 · Inteligência</span>
+            <h3>Um copiloto que já sabe onde procurar a resposta</h3>
+            <p>Pergunte em texto livre — "quais prazos estão vencidos?", "quais leads estão parados há mais tempo?" — e a IA responde consultando prazos, processos, clientes e financeiro do escritório. O mesmo motor também lê publicações do DJe e AASP em PDF.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Copiloto IA responde perguntas sobre todo o sistema</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Leitura de PDFs de publicações DJe e AASP</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Uso diário disponível em todos os planos</li>
+            </ul>
+          </div>
+          <div class="pillar-visual">
+            <img src="assets/print-copiloto-ia.jpg" alt="Copiloto IA do MT Juris respondendo perguntas sobre o escritório" />
+          </div>
+        </div>
+
+        <div class="pillar-block" id="p3" data-reveal>
+          <div>
+            <span class="tag">03 · Estrutura</span>
+            <h3>Prazos, processos, clientes e agenda — organizados de verdade</h3>
+            <p>Cada prazo passa por um fluxo de três etapas até o protocolo. Cada processo, cliente e compromisso da agenda fica ligado entre si, sem retrabalho de digitar o mesmo dado duas vezes.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Fluxo Enviado → Revisado → Protocolado</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Processo criado automaticamente a partir de um prazo novo</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Calendário único unificando prazos, tarefas e agenda</li>
+            </ul>
+          </div>
+          <div class="pillar-visual">
+            <img src="assets/print-calendario.jpg" alt="Calendário unificado do MT Juris com prazos, tarefas, reuniões e audiências" />
+          </div>
+        </div>
+
+        <div class="pillar-block rev" id="p4" data-reveal>
+          <div>
+            <span class="tag">04 · Eficiência</span>
+            <h3>Migração em minutos, não em semanas de digitação</h3>
+            <p>Importe sua base atual de clientes, processos e prazos direto de uma planilha Excel. Sem precisar recadastrar tudo manualmente pra começar a usar o sistema no dia a dia.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Importação de clientes, processos e prazos via Excel</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Modelos de planilha prontos pra preencher</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Relatórios e análises com exportação em PDF</li>
+            </ul>
+          </div>
+          <div class="pillar-visual">
+            <img src="assets/print-processos.jpg" alt="Tela de Processos do MT Juris com botão de importar planilha" />
+          </div>
+        </div>
+
+        <div class="pillar-block" id="p5" data-reveal>
+          <div>
+            <span class="tag">05 · Relacionamento</span>
+            <h3>Um portal do cliente que identifica a pessoa certa</h3>
+            <p>O acesso do cliente ao portal é feito por CPF, não por nome — eliminando duplicidade entre clientes homônimos. Cada cliente tem seu próprio repositório de documentos, isolado dos demais.</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Portal do cliente com acesso identificado por CPF</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Repositório de documentos por cliente</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Sem cruzamento entre clientes com nomes iguais</li>
+            </ul>
+          </div>
+          <div class="pillar-visual">
+            <img src="assets/print-cliente-cpf.jpg" alt="Cadastro de cliente no MT Juris com campo de CPF/CNPJ" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="extras" data-reveal>
+      <p class="eyebrow" style="margin-bottom:10px;">E também no sistema</p>
+      <div class="extras-grid">
+        <div class="extra-card">
+          <img src="assets/print-crm.jpg" alt="CRM de leads do MT Juris" />
+          <div class="extra-copy"><h4>CRM de leads</h4><p>Funil de novo contato até contratado, com taxa de conversão.</p></div>
+        </div>
+        <div class="extra-card">
+          <img src="assets/print-financeiro.jpg" alt="Financeiro do MT Juris" />
+          <div class="extra-copy"><h4>Financeiro por cliente</h4><p>Recebido, a receber e status de cada honorário.</p></div>
+        </div>
+        <div class="extra-card">
+          <img src="assets/print-analises.jpg" alt="Análises do MT Juris" />
+          <div class="extra-copy"><h4>Análises e visão geral</h4><p>Carteira total, receita mensal e taxa de recebimento.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="seguranca">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Segurança</p>
+      <h2>Sigilo profissional não é opcional. No sistema, também não é.</h2>
+      <p>Advocacia lida com informação sensível todos os dias. O MT Juris trata isso como requisito de arquitetura, não como funcionalidade extra.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card" data-reveal>
+        <p class="num">Camada 1</p>
+        <h3>Banco de dados</h3>
+        <p>Regras de acesso aplicadas diretamente no banco (RLS), não só na interface — mesmo uma falha de tela não expõe dado que não deveria.</p>
+      </div>
+      <div class="pain-card" data-reveal>
+        <p class="num">Camada 2</p>
+        <h3>Financeiro isolado</h3>
+        <p>O módulo financeiro exige PIN próprio, separado da senha de login. Só quem precisa acessar, acessa.</p>
+      </div>
+      <div class="pain-card" data-reveal>
+        <p class="num">Camada 3</p>
+        <h3>Auditoria</h3>
+        <p>Mudanças administrativas sensíveis — como alteração de função de usuário — ficam registradas e são bloqueadas fora do fluxo correto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-2)" id="planos">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Planos</p>
+      <h2>Um plano pro tamanho do seu escritório</h2>
+      <p>Todos os planos incluem relatórios e análises completos — a diferença está no número de usuários e no limite diário de IA para publicações, nunca na profundidade dos dados que você vê.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="plan" data-reveal>
+        <h3>Essencial</h3>
+        <div class="price"><b>R$ 197</b><span>/mês</span></div>
+        <p class="size">1 a 5 advogados</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Prazos, processos, clientes e agenda</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Financeiro com controle por PIN</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Relatórios e análises completos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Portal do cliente por CPF</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>IA para publicações (limite diário)</li>
+        </ul>
+        <a class="btn btn-outline" href="#contato">Testar grátis por 7 dias</a>
+      </div>
+
+      <div class="plan featured" data-reveal>
+        <span class="badge">Mais escolhido</span>
+        <h3>Profissional</h3>
+        <div class="price"><b>R$ 397</b><span>/mês</span></div>
+        <p class="size">6 a 15 advogados</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tudo do plano Essencial</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Mais usuários simultâneos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Limite diário de IA ampliado</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Relatórios e análises completos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Suporte prioritário</li>
+        </ul>
+        <a class="btn btn-gold" href="#contato">Testar grátis por 7 dias</a>
+      </div>
+
+      <div class="plan" data-reveal>
+        <h3>Corporativo</h3>
+        <div class="price"><b>R$ 697</b><span>/mês</span></div>
+        <p class="size">16 advogados ou mais</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Tudo do plano Profissional</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Usuários ilimitados dentro do escritório</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Maior limite diário de IA</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Relatórios e análises completos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Onboarding assistido na migração</li>
+        </ul>
+        <a class="btn btn-outline" href="#contato">Testar grátis por 7 dias</a>
+      </div>
+    </div>
+    <p class="pricing-foot">7 dias de teste grátis em qualquer plano. Sem multa de cancelamento.</p>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Perguntas frequentes</p>
+      <h2>Antes de decidir</h2>
+    </div>
+    <div class="faq-list" data-reveal>
+      <div class="faq-item">
+        <button class="faq-q">É seguro migrar meus dados de planilha pro sistema? <span class="plus"></span></button>
+        <div class="faq-a"><p>Sim. A importação usa modelos de planilha prontos para clientes, processos e prazos — você preenche no formato indicado e o sistema valida antes de gravar. Nada é sobrescrito sem confirmação.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Quem tem acesso aos dados do financeiro do escritório? <span class="plus"></span></button>
+        <div class="faq-a"><p>Só quem tiver o PIN configurado para o módulo financeiro, além das regras de permissão por usuário aplicadas diretamente no banco de dados — não apenas na tela.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">O limite diário de IA impede meu escritório de usar relatórios? <span class="plus"></span></button>
+        <div class="faq-a"><p>Não. O limite diário se aplica apenas às perguntas feitas à IA sobre publicações. Relatórios, análises, prazos, processos e financeiro não têm limite de uso em nenhum plano.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Como funciona o teste grátis de 7 dias? <span class="plus"></span></button>
+        <div class="faq-a"><p>Você usa o sistema completo, no plano que escolher, por 7 dias. Ao fim do período, é possível seguir contratando o plano ou encerrar, sem multa de cancelamento.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Dá pra trocar de plano depois? <span class="plus"></span></button>
+        <div class="faq-a"><p>Sim. Conforme o escritório cresce em número de advogados, é possível mudar de plano sem perder histórico de prazos, processos ou clientes já cadastrados.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="contato">
+  <div class="wrap">
+    <p class="eyebrow on-dark">Comece agora</p>
+    <h2>Teste o MT Juris por 7 dias, sem compromisso</h2>
+    <p>Leve prazos, processos, clientes e financeiro do escritório pra um único lugar — com a segurança que a advocacia exige.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-gold" href="mailto:contato@mtjuris.com.br?subject=Quero%20testar%20o%20MT%20Juris">Falar com a equipe</a>
+      <a class="btn btn-outline-light" href="#planos">Ver planos novamente</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="assets/mtjuris-logo-empilhado.png" alt="MT Juris" />
+        <p>Sistema de gestão jurídica para escritórios de advocacia — prazos, processos, clientes e financeiro em um único lugar.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Produto</h4>
+        <a href="#recursos">Recursos</a>
+        <a href="#seguranca">Segurança</a>
+        <a href="#planos">Planos</a>
+        <a href="#faq">Perguntas frequentes</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contato</h4>
+        <a href="mailto:contato@mtjuris.com.br">contato@mtjuris.com.br</a>
+        <a href="#top">São Paulo, SP</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 MT Juris. Todos os direitos reservados.</span>
+      <span>Gestão inteligente · Controle total · Resultados consistentes</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // pillar rail sync
+  const railItems = document.querySelectorAll('.rail-item');
+  const pillarBlocks = document.querySelectorAll('.pillar-block');
+  const railMap = {};
+  railItems.forEach(r=>railMap[r.dataset.target]=r);
+
+  const railIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        railItems.forEach(r=>r.classList.remove('active'));
+        const match = railMap[entry.target.id];
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {threshold:.5, rootMargin:'-20% 0px -20% 0px'});
+  pillarBlocks.forEach(b=>railIO.observe(b));
+
+  railItems.forEach(r=>{
+    r.addEventListener('click', ()=>{
+      document.getElementById(r.dataset.target).scrollIntoView({behavior:'smooth', block:'center'});
+    });
+  });
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
